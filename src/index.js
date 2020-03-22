@@ -14,7 +14,7 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            squares: Array(9).fill(null),
+            squares: Array(225).fill(null),
             xIsNext: true,
         };
     }
@@ -94,19 +94,29 @@ ReactDOM.render(
 );
 
 function calculateLines() {
-    const rows = [];
-    const cols = [];
+    const res = [];
     for (let i = 0; i < 15; i++) {
         // get winning row lines
         for (let j = i * 15; j <= i * 15 + 10; j++) {
-            rows.push([j, j+1, j+2, j+3, j+4]);
+            res.push([j, j+1, j+2, j+3, j+4]);
         }
         // get winning col lines
         for (let j = i; j <= i + 150; j += 15) {
-            cols.push([j, j+15, j+30, j+45, j+60]);
+            res.push([j, j+15, j+30, j+45, j+60]);
+        }
+        // get winning diag lines
+        for (let j = 0; j <= 11 - i; j++) {
+            let col1 = i + 16 * j;
+            res.push([col1, col1+16, col1+32, col1+48, col1+64]);
+            let col2 = 14 * (j + 1) - i;
+            res.push([col2, col2+14, col2+28, col2+42, col2+56]);
+            let row1 = 15 * i + 16 * j;
+            res.push([row1, row1+16, row1+32, row1+48, row1+64]);
+            let row2 = 15 * i + 14 * (j + 1);
+            res.push([row2, row2+14, row2+28, row2+42, row2+56]);
         }
     }
-    return rows.concat(cols);
+    return res;
 }
 
 function calculateWinner(squares) {
