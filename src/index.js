@@ -44,7 +44,7 @@ class Board extends React.Component {
         const board = [];
         for (let i = 0; i < 15; i++) {
             let row = [];
-            for (let j = i * 15; j < i * 15 + 15; j++) {
+            for (let j = i * 15; j < 15 * (i + 1); j++) {
                 row.push(this.renderSquare(j));
             }
             board.push(<div className="board-row">{row}</div>);

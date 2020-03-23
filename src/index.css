@@ -18,18 +18,22 @@ ol, ul {
 }
 
 .square {
-  background: #fff;
-  border: 1px solid #999;
+  background: #f0f0f0;
+  border: 2px solid white;
   float: left;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
-  line-height: 34px;
-  height: 34px;
+  height: 38px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 38px;
+}
+
+.square:hover {
+  background: #bff199;
+  cursor: pointer;
 }
 
 .square:focus {
