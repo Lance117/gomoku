@@ -4,7 +4,10 @@ import './index.css';
 
 function Square(props) {
     return (
-        <button className="square" onClick={() => props.onClick()}>
+        <button
+            className={props.status ? 'square ' + props.status : 'square unclicked'}
+            onClick={() => props.onClick()}
+        >
             {props.value}
         </button>
     );
@@ -35,6 +38,7 @@ class Board extends React.Component {
         return (
             <Square
                 value={this.state.squares[i]}
+                status={!!this.state.squares[i] ? 'clicked-' + this.state.squares[i] : null}
                 onClick={() => this.handleClick(i)}
             />
         );

@@ -18,26 +18,40 @@ ol, ul {
 }
 
 .square {
-  background: #f0f0f0;
-  border: 2px solid white;
+  background: rgba(0,0,0,0.1);
+  border: 3px solid white;
   float: left;
   font-size: 26px;
-  font-weight: bold;
-  height: 38px;
+  font-weight: bolder;
+  height: 40px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 38px;
+  width: 40px;
 }
 
-.square:hover {
-  background: #bff199;
+.unclicked:hover {
+  background: rgba(0,0,0,0.25);
   cursor: pointer;
 }
 
 .square:focus {
   outline: none;
+}
+
+.clicked-X, .clicked-O {
+  cursor: default;
+}
+
+.clicked-X {
+  background: #bff199;
+  color: #faa918;
+}
+
+.clicked-O {
+  background: #f7c8c9;
+  color: #8549ba;
 }
 
 .kbd-navigation .square:focus {
