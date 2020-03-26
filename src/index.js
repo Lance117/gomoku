@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import './index.css';
 
 function Square(props) {
@@ -12,6 +14,25 @@ function Square(props) {
     );
 }
 
+function Restart(props) {
+    let title;
+    if (props.mode === 'default') {
+        title = 'Single Player Mode';
+    }
+    return (
+        <Modal isOpen={props.modal} toggle={props.toggle}>
+            <ModalHeader toggle={props.toggle}>{title}</ModalHeader>
+            <ModalBody>
+               Are you sure you want to restart? 
+            </ModalBody>
+            <ModalFooter>
+                <Button color="primary" onClick={props.reset}>Restart</Button>{' '}
+                <Button color="secondary" onClick={props.toggle}>Cancel</Button>
+            </ModalFooter>
+        </Modal>
+    )
+}
+
 class Board extends React.Component {
     constructor(props) {
         super(props);
@@ -20,6 +41,9 @@ class Board extends React.Component {
             xIsNext: true,
             winner: null,
             numSquares: 225,
+            openModal: false,
+            mode: 'default',
+            selectedMode: null,
         };
     }
 
@@ -35,6 +59,24 @@ class Board extends React.Component {
             winner: calculateWinner(squares),
             numSquares: this.state.numSquares - 1
         });
+    }
+
+    toggle(mode) {
+        this.setState({openModal: !this.state.openModal, selectedMode: mode});
+    }
+
+    reset(mode) {
+        if (mode === 'default') {
+            this.setState({
+                squares: Array(225).fill(null),
+                xIsNext: true,
+                winner: null,
+                numSquares: 225,
+                openModal: false,
+                mode: 'default',
+                selectedMode: null
+            })
+        }
     }
 
     renderSquare(i) {
@@ -74,6 +116,17 @@ class Board extends React.Component {
             <div>
                 <div className="status">{status}</div>
                 {this.renderBoard()}
+                <div>
+                    <Button color="primary" onClick={(e) => this.toggle('default', e)}>RESTART GAME</Button>{' '}
+                    <Button color="info">PLAY COMPUTER</Button>{' '}
+                </div>
+                <Restart
+                    modal={this.state.openModal}
+                    mode={this.state.selectedMode}
+                    reset={(e) => this.reset(this.state.selectedMode, e)}
+                    toggle={() => this.toggle()}
+                >
+                </Restart>
             </div>
         );
     }
