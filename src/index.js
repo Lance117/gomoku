@@ -18,6 +18,8 @@ function Restart(props) {
     let title;
     if (props.mode === 'default') {
         title = 'Single Player Mode';
+    } else if (props.mode === 'ai') {
+        title = 'Play Against Computer';
     }
     return (
         <Modal isOpen={props.modal} toggle={props.toggle}>
@@ -82,6 +84,7 @@ class Board extends React.Component {
     renderSquare(i) {
         return (
             <Square
+                key={'square'+i.toString()}
                 value={this.state.squares[i]}
                 status={!!this.state.squares[i] ? 'clicked-' + this.state.squares[i] : null}
                 isWinner={this.state.winner && this.state.winner[1].includes(i)}
@@ -97,7 +100,7 @@ class Board extends React.Component {
             for (let j = i * 15; j < 15 * (i + 1); j++) {
                 row.push(this.renderSquare(j));
             }
-            board.push(<div className="board-row">{row}</div>);
+            board.push(<div className="board-row" key={'row'+i.toString()}>{row}</div>);
         }
         return board;
     }
@@ -118,7 +121,7 @@ class Board extends React.Component {
                 {this.renderBoard()}
                 <div>
                     <Button color="primary" onClick={(e) => this.toggle('default', e)}>RESTART GAME</Button>{' '}
-                    <Button color="info">PLAY COMPUTER</Button>{' '}
+                    <Button color="info" onClick={(e) => this.toggle('ai', e)}>PLAY COMPUTER</Button>{' '}
                 </div>
                 <Restart
                     modal={this.state.openModal}
