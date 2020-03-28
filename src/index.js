@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import './index.css';
 
+const L = 15;
+
 function Square(props) {
     let name = props.status ? 'square ' + props.status : 'square unclicked';
     if (props.isWinner) name = name + ' is-winner';
@@ -39,7 +41,7 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            squares: Array(225).fill(null),
+            squares: Array(L * L).fill(null),
             xIsNext: true,
             winner: null,
             numSquares: 225,
@@ -70,10 +72,10 @@ class Board extends React.Component {
     reset(mode) {
         if (mode === 'default') {
             this.setState({
-                squares: Array(225).fill(null),
+                squares: Array(L*L).fill(null),
                 xIsNext: true,
                 winner: null,
-                numSquares: 225,
+                numSquares: L*L,
                 openModal: false,
                 mode: 'default',
                 selectedMode: null
@@ -96,9 +98,9 @@ class Board extends React.Component {
 
     renderBoard() {
         const board = [];
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < L; i++) {
             let row = [];
-            for (let j = i * 15; j < 15 * (i + 1); j++) {
+            for (let j = i * L; j < L * (i + 1); j++) {
                 row.push(this.renderSquare(j));
             }
             board.push(<div className="board-row" key={'row'+i.toString()}>{row}</div>);
@@ -161,25 +163,27 @@ ReactDOM.render(
 
 function calculateLines() {
     const res = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < L; i++) {
         // get winning row lines
-        for (let j = i * 15; j <= i * 15 + 10; j++) {
+        for (let j = i * L; j <= i * L + L - 5; j++) {
             res.push([j, j+1, j+2, j+3, j+4]);
         }
         // get winning col lines
-        for (let j = i; j <= i + 150; j += 15) {
-            res.push([j, j+15, j+30, j+45, j+60]);
+        for (let j = i; j <= i + L * 10; j += L) {
+            res.push([j, j+L, j+L*2, j+L*3, j+L*4]);
         }
         // get winning diag lines
-        for (let j = 0; j <= 11 - i; j++) {
-            let col1 = i + 16 * j;
-            res.push([col1, col1+16, col1+32, col1+48, col1+64]);
-            let col2 = 14 * (j + 1) - i;
-            res.push([col2, col2+14, col2+28, col2+42, col2+56]);
-            let row1 = 15 * i + 16 * j;
-            res.push([row1, row1+16, row1+32, row1+48, row1+64]);
-            let row2 = 15 * i + 14 * (j + 1);
-            res.push([row2, row2+14, row2+28, row2+42, row2+56]);
+        for (let j = 0; j <= L - 4 - i; j++) {
+            const d1 = L + 1;
+            const d2 = L - 1;
+            let col1 = i + d1 * j;
+            let col2 = d2 * (j + 1) - i;
+            let row1 = L * i + d1 * j;
+            let row2 = L * i + d2 * (j + 1);
+            res.push([col1, col1+d1, col1+d1*2, col1+d1*3, col1+d1*4]);
+            res.push([col2, col2+d2, col2+d2*2, col2+d2*3, col2+d2*4]);
+            res.push([row1, row1+d1, row1+d1*2, row1+d1*3, row1+d1*4]);
+            res.push([row2, row2+d2, row2+d2*2, row2+d2*3, row2+d2*4]);
         }
     }
     return res;

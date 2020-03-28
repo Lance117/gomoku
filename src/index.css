@@ -25,14 +25,22 @@ ol, ul {
   background: rgba(0,0,0,0.1);
   border: 3px solid white;
   float: left;
-  font-size: 26px;
+  font-size: 10px;
   font-weight: bolder;
-  height: 39px;
+  height: 20px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 39px;
+  width: 20px;
+}
+
+@media only screen and (min-width: 768px) {
+  .square {
+    font-size: 26px;
+    height: 39px;
+    width: 39px;
+  }
 }
 
 .is-winner {
