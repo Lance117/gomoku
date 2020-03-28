@@ -13,6 +13,10 @@ ol, ul {
   display: table;
 }
 
+.btn-options {
+  margin-top: 10px;
+}
+
 .status {
   margin-bottom: 10px;
 }
@@ -40,12 +44,17 @@ ol, ul {
   cursor: pointer;
 }
 
+.unclicked:hover:before {
+  content: attr(cur-piece);
+}
+
 .square:focus {
   outline: none;
 }
 
 .clicked-X, .clicked-O {
-  cursor: default;
+  cursor: default !important;
+  transition: ease 0.2s;
 }
 
 .clicked-X {

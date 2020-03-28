@@ -8,7 +8,7 @@ function Square(props) {
     let name = props.status ? 'square ' + props.status : 'square unclicked';
     if (props.isWinner) name = name + ' is-winner';
     return (
-        <button className={name} onClick={() => props.onClick()}>
+        <button className={name} cur-piece={props.curPiece} onClick={() => props.onClick()}>
             {props.value}
         </button>
     );
@@ -85,6 +85,7 @@ class Board extends React.Component {
         return (
             <Square
                 key={'square'+i.toString()}
+                curPiece={this.state.xIsNext ? 'X' : 'O'}
                 value={this.state.squares[i]}
                 status={!!this.state.squares[i] ? 'clicked-' + this.state.squares[i] : null}
                 isWinner={this.state.winner && this.state.winner[1].includes(i)}
@@ -119,7 +120,7 @@ class Board extends React.Component {
             <div>
                 <div className="status">{status}</div>
                 {this.renderBoard()}
-                <div>
+                <div className="btn-options">
                     <Button color="primary" onClick={(e) => this.toggle('default', e)}>RESTART GAME</Button>{' '}
                     <Button color="info" onClick={(e) => this.toggle('ai', e)}>PLAY COMPUTER</Button>{' '}
                 </div>
