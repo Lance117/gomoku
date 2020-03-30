@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from "reactstrap";
 import './index.css';
 
 const L = 15;
@@ -109,8 +109,7 @@ class Board extends React.Component {
     componentDidUpdate() {
         if (this.state.mode === 'ai' && !this.state.xIsNext) {
             const move = aiMove(this.state.squares, this.state.spotsOccupied);
-            console.log(move);
-            this.handleClick(move);
+            window.setTimeout((move) => this.handleClick(move), 400, move);
         }
     }
 
@@ -120,13 +119,19 @@ class Board extends React.Component {
             status = 'Winner: ' + this.state.winner[0];
         } else if (this.state.spotsOccupied === L * L) {
             status = 'Game ended in a draw';
+        } else if (this.state.mode === 'ai' && !this.state.xIsNext) {
+            status = 'Thinking...'
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
+        const thinking = this.state.mode === 'ai' && !this.state.xIsNext && !this.state.winner;
 
         return (
             <div>
-                <div className="status">{status}</div>
+                <div className="status">
+                    {status}
+                    {thinking && <Spinner size="sm" color="primary" />}
+                </div>
                 {this.renderBoard()}
                 <div className="btn-options">
                     <Button color="primary" onClick={(e) => this.toggle('default', e)}>RESTART GAME</Button>{' '}
