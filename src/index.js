@@ -108,7 +108,9 @@ class Board extends React.Component {
 
     componentDidUpdate() {
         if (this.state.mode === 'ai' && !this.state.xIsNext) {
-            this.handleClick(aiMove(this.state.squares, this.state.spotsOccupied));
+            const move = aiMove(this.state.squares, this.state.spotsOccupied);
+            console.log(move);
+            this.handleClick(move);
         }
     }
 
@@ -211,14 +213,16 @@ function calculateWinner(squares) {
 }
 
 function aiMove(state, spotsOccupied) {
+    if (state.length === spotsOccupied) return null;
+    let pivot = state.length - 1;
     const squares = state.slice();
-    if (squares.length === spotsOccupied) return null;
-    let pivot = squares.length - 1;
+    const indices = [...Array(L*L).keys()];
     for (let i = 0; i < squares.length - spotsOccupied; i++) {
-        if (squares[i]) {
+        while (squares[i]) {
             [squares[i], squares[pivot]] = [squares[pivot], squares[i]];
+            [indices[i], indices[pivot]] = [indices[pivot], indices[i]];
             pivot -= 1;
         }
     }
-    return Math.floor(Math.random() * (squares.length - spotsOccupied));
+    return indices[Math.floor(Math.random() * (squares.length - spotsOccupied))];
 }
