@@ -7,7 +7,7 @@ import './index.css';
 const L = 15;
 
 function Square(props) {
-    let name = props.status ? 'square ' + props.status : 'square unclicked';
+    let name = props.sqState ? 'square ' + props.sqState : 'square unclicked';
     if (props.isWinner) name = name + ' is-winner';
     return (
         <button className={name} cur-piece={props.curPiece} onClick={() => props.onClick()}>
@@ -44,7 +44,7 @@ class Board extends React.Component {
             squares: Array(L * L).fill(null),
             xIsNext: true,
             winner: null,
-            numSquares: 225,
+            spotsOccupied: 0,
             openModal: false,
             mode: 'default',
             selectedMode: null,
@@ -61,7 +61,7 @@ class Board extends React.Component {
             squares: squares,
             xIsNext: !this.state.xIsNext,
             winner: calculateWinner(squares),
-            numSquares: this.state.numSquares - 1
+            spotsOccupied: this.state.spotsOccupied + 1
         });
     }
 
@@ -70,17 +70,15 @@ class Board extends React.Component {
     }
 
     reset(mode) {
-        if (mode === 'default') {
-            this.setState({
-                squares: Array(L*L).fill(null),
-                xIsNext: true,
-                winner: null,
-                numSquares: L*L,
-                openModal: false,
-                mode: 'default',
-                selectedMode: null
-            })
-        }
+        this.setState({
+            squares: Array(L*L).fill(null),
+            xIsNext: true,
+            winner: null,
+            spotsOccupied: 0,
+            openModal: false,
+            mode: mode,
+            selectedMode: null
+        })
     }
 
     renderSquare(i) {
@@ -89,7 +87,7 @@ class Board extends React.Component {
                 key={'square'+i.toString()}
                 curPiece={this.state.xIsNext ? 'X' : 'O'}
                 value={this.state.squares[i]}
-                status={!!this.state.squares[i] ? 'clicked-' + this.state.squares[i] : null}
+                sqState={!!this.state.squares[i] ? 'clicked-' + this.state.squares[i] : null}
                 isWinner={this.state.winner && this.state.winner[1].includes(i)}
                 onClick={() => this.handleClick(i)}
             />
@@ -108,11 +106,17 @@ class Board extends React.Component {
         return board;
     }
 
+    componentDidUpdate() {
+        if (this.state.mode === 'ai' && !this.state.xIsNext) {
+            this.handleClick(aiMove(this.state.squares, this.state.spotsOccupied));
+        }
+    }
+
     render() {
         let status;
         if (this.state.winner) {
             status = 'Winner: ' + this.state.winner[0];
-        } else if (this.state.numSquares === 0) {
+        } else if (this.state.spotsOccupied === L * L) {
             status = 'Game ended in a draw';
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
@@ -204,4 +208,17 @@ function calculateWinner(squares) {
         }
     }
     return null;
+}
+
+function aiMove(state, spotsOccupied) {
+    const squares = state.slice();
+    if (squares.length === spotsOccupied) return null;
+    let pivot = squares.length - 1;
+    for (let i = 0; i < squares.length - spotsOccupied; i++) {
+        if (squares[i]) {
+            [squares[i], squares[pivot]] = [squares[pivot], squares[i]];
+            pivot -= 1;
+        }
+    }
+    return Math.floor(Math.random() * (squares.length - spotsOccupied));
 }
