@@ -184,7 +184,7 @@ function calculateLines() {
             res.push([j, j+L, j+L*2, j+L*3, j+L*4]);
         }
         // get winning diag lines
-        for (let j = 0; j <= L - 4 - i; j++) {
+        for (let j = 0; j < L - 4 - i; j++) {
             const d1 = L + 1;
             const d2 = L - 1;
             let col1 = i + d1 * j;
@@ -211,6 +211,7 @@ function calculateWinner(squares) {
             squares[a] === squares[d] &&
             squares[a] === squares[e]
         ) {
+            console.log(lines[i])
             return [squares[a], lines[i]];
         }
     }
