@@ -5,6 +5,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from "rea
 import './index.css';
 
 const L = 15;
+const LINES = calculateLines();
 
 function Square(props) {
     let name = props.sqState ? 'square ' + props.sqState : 'square unclicked';
@@ -201,21 +202,22 @@ function calculateLines() {
 }
 
 function calculateWinner(squares) {
-    const lines = calculateLines();
-    for (let i = 0; i < lines.length; i++) {
-        const [a, b, c, d, e] = lines[i];
-        if (
-            squares[a] &&
-            squares[a] === squares[b] &&
-            squares[a] === squares[c] &&
-            squares[a] === squares[d] &&
-            squares[a] === squares[e]
-        ) {
-            console.log(lines[i])
-            return [squares[a], lines[i]];
+    for (let i = 0; i < LINES.length; i++) {
+        if (squares[LINES[i][0]] && LINES[i].every( (x, i, arr) => squares[x] === squares[arr[0]])) {
+            return [squares[LINES[i][0]], LINES[i]]
         }
     }
     return null;
+}
+
+function terminal(squares) {
+    return calculateWinner(squares) || !squares.includes(null);
+}
+
+function result(squares, action, player) {
+    const board = squares.slice();
+    board[action] = player;
+    return board;
 }
 
 function aiMove(state, spotsOccupied) {
