@@ -210,8 +210,27 @@ function calculateWinner(squares) {
     return null;
 }
 
+function four(squares) {
+    for (let i = 0; i < LINES.length; i++) {
+        const sliceA = LINES[i].slice(0, 4);
+        const sliceB = LINES[i].slice(1, 5);
+        const checkA = !squares[LINES[i][4]] && sliceA.every((x, i, arr) => squares[x] === squares[arr[0]]);
+        const checkB = !squares[LINES[i][0]] && sliceB.every((x, i, arr) => squares[x] === squares[arr[0]]);
+        if (checkA || checkB) return true;
+    }
+    return false;
+}
+
 function terminal(squares) {
     return calculateWinner(squares) || !squares.includes(null);
+}
+
+function actions(squares) {
+    const res = [];
+    for (let i = 0; i < squares.length; i++) {
+        if (!squares[i]) res.push(i);
+    }
+    return res;
 }
 
 function result(squares, action, player) {
