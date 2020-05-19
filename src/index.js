@@ -5,7 +5,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from "rea
 import './index.css';
 
 const L = 15;
-const LINES = calculateLines();
+const LINES = calculateLines(5);
 
 function Square(props) {
     let name = props.sqState ? 'square ' + props.sqState : 'square unclicked';
@@ -173,19 +173,27 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-function calculateLines() {
+function calculateLines(n) {
     const res = [];
     for (let i = 0; i < L; i++) {
         // get winning row lines
-        for (let j = i * L; j <= i * L + L - 5; j++) {
-            res.push([j, j+1, j+2, j+3, j+4]);
+        for (let j = i * L; j <= i * L + L - n; j++) {
+            const row = [];
+            for (let k = 0; k < n; k++) {
+                row.push(j + k);
+            }
+            res.push(row);
         }
         // get winning col lines
-        for (let j = i; j <= i + L * 10; j += L) {
-            res.push([j, j+L, j+L*2, j+L*3, j+L*4]);
+        for (let j = i; j <= i + L * (L - n); j += L) {
+            const col = [];
+            for (let k = 0; k < n; k++) {
+                col.push(j + L * k);
+            }
+            res.push(col);
         }
         // get winning diag lines
-        for (let j = 0; j < L - 4 - i; j++) {
+        for (let j = 0; j < L - n - 1 - i; j++) {
             const d1 = L + 1;
             const d2 = L - 1;
             let col1 = i + d1 * j;
