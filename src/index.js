@@ -173,6 +173,14 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
+function makeDiags(start, n, d) {
+    const res = [];
+    for (let i = 0; i < n; i++) {
+        res.push(start + i * d)
+    }
+    return res;
+}
+
 function calculateLines(n) {
     const res = [];
     for (let i = 0; i < L; i++) {
@@ -200,10 +208,10 @@ function calculateLines(n) {
             let col2 = d2 * (j + 1) - i;
             let row1 = L * i + d1 * j;
             let row2 = L * i + d2 * (j + 1);
-            res.push([col1, col1+d1, col1+d1*2, col1+d1*3, col1+d1*4]);
-            res.push([col2, col2+d2, col2+d2*2, col2+d2*3, col2+d2*4]);
-            res.push([row1, row1+d1, row1+d1*2, row1+d1*3, row1+d1*4]);
-            res.push([row2, row2+d2, row2+d2*2, row2+d2*3, row2+d2*4]);
+            res.push(makeDiags(col1, n, d1));
+            res.push(makeDiags(col2, n, d2));
+            res.push(makeDiags(row1, n, d1));
+            res.push(makeDiags(row2, n, d2));
         }
     }
     return res;
