@@ -6,6 +6,8 @@ import './index.css';
 
 const L = 15;
 const LINES = calculateLines(5);
+const SIXES = calculateLines(6);
+const SEVENS = calculateLines(7);
 
 function Square(props) {
     let name = props.sqState ? 'square ' + props.sqState : 'square unclicked';
@@ -227,14 +229,36 @@ function calculateWinner(squares) {
 }
 
 function four(squares) {
+    const res = [0, 0];
     for (let i = 0; i < LINES.length; i++) {
-        const sliceA = LINES[i].slice(0, 4);
-        const sliceB = LINES[i].slice(1, 5);
-        const checkA = !squares[LINES[i][4]] && sliceA.every((x, i, arr) => squares[x] === squares[arr[0]]);
-        const checkB = !squares[LINES[i][0]] && sliceB.every((x, i, arr) => squares[x] === squares[arr[0]]);
-        if (checkA || checkB) return true;
+        const lineNum = LINES[i].slice().sort();
+        const line = lineNum.map(x => squares[x]);
+        if (line[0] && line.filter(x => x === line[0]).length === 4 && !line[4]) {
+            if (line[0] === 'X') {
+                res[0] += 1;
+            } else {
+                res[1] += 1;
+            }
+        }
     }
-    return false;
+    return res;
+}
+
+function straightFour(squares) {
+    const res = [0, 0];
+    for (let i = 0; i < SIXES.length; i++) {
+        const line = SIXES[i];
+        const slice = line.slice(1, 5);
+        const isFour = squares[slice[0]] && slice.every((x, i, arr) => squares[x] === squares[arr[0]]);
+        if (isFour && !(squares[line[0]] || squares[line[5]])) {
+            if (squares[slice[0]] === 'X') {
+                res[0] += 1;
+            } else {
+                res[1] += 1;
+            }
+        }
+    }
+    return res;
 }
 
 function terminal(squares) {
