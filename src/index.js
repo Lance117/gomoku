@@ -231,8 +231,8 @@ function calculateWinner(squares) {
 function four(squares) {
     const res = [0, 0];
     for (let i = 0; i < LINES.length; i++) {
-        const lineNum = LINES[i].slice().sort();
-        const line = lineNum.map(x => squares[x]);
+        const lineNum = LINES[i];
+        const line = lineNum.map(x => squares[x]).sort();
         if (line[0] && line.filter(x => x === line[0]).length === 4 && !line[4]) {
             if (line[0] === 'X') {
                 res[0] += 1;
@@ -251,6 +251,24 @@ function straightFour(squares) {
         const slice = line.slice(1, 5);
         const isFour = squares[slice[0]] && slice.every((x, i, arr) => squares[x] === squares[arr[0]]);
         if (isFour && !(squares[line[0]] || squares[line[5]])) {
+            if (squares[slice[0]] === 'X') {
+                res[0] += 1;
+            } else {
+                res[1] += 1;
+            }
+        }
+    }
+    return res;
+}
+
+function brokenThree(squares) {
+    const res = [0, 0];
+    for (let i = 0; i < SIXES.length; i++) {
+        const line = SIXES[i];
+        const slice = line.slice(1, 5);
+        const sLine = slice.map(x => squares[x]).sort();
+        const isThree = sLine[0] && sLine.filter(x => x === sLine[0]).length === 3 && !sLine[4];
+        if (isThree && !(squares[line[0]] || squares[line[5]])) {
             if (squares[slice[0]] === 'X') {
                 res[0] += 1;
             } else {
