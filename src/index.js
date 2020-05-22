@@ -117,6 +117,7 @@ class Board extends React.Component {
     }
 
     render() {
+        console.log(three(this.state.squares));
         let status;
         if (this.state.winner) {
             status = 'Winner: ' + this.state.winner[0];
@@ -251,6 +252,37 @@ function straightFour(squares) {
         const slice = line.slice(1, 5);
         const isFour = squares[slice[0]] && slice.every((x, i, arr) => squares[x] === squares[arr[0]]);
         if (isFour && !(squares[line[0]] || squares[line[5]])) {
+            if (squares[slice[0]] === 'X') {
+                res[0] += 1;
+            } else {
+                res[1] += 1;
+            }
+        }
+    }
+    return res;
+}
+
+function three(squares) {
+    const res = [0, 0];
+    for (let i = 0; i < SEVENS.length; i++) {
+        const line = SEVENS[i];
+        const sLine = line.map(x => squares[x]);
+        const slice = line.slice(2, 5);
+        const isThree = squares[slice[0]] && slice.every((x, i, arr) => squares[x] === squares[arr[0]]);
+        if (isThree && sLine.filter(x => x === null).length === 4) {
+            if (squares[slice[0]] === 'X') {
+                res[0] += 1;
+            } else {
+                res[1] += 1;
+            }
+        }
+    }
+    for (let i = 0; i < SIXES.length; i++) {
+        const line = SIXES[i];
+        const sLine = line.map(x => squares[x]);
+        const slice = line.slice(1, 4);
+        const isThree = squares[slice[0]] && slice.every((x, i, arr) => squares[x] === squares[arr[0]]);
+        if (isThree && sLine.filter(x => x === null).length === 3) {
             if (squares[slice[0]] === 'X') {
                 res[0] += 1;
             } else {
