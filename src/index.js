@@ -111,13 +111,12 @@ class Board extends React.Component {
 
     componentDidUpdate() {
         if (this.state.mode === 'ai' && !this.state.xIsNext) {
-            const move = aiMove(this.state.squares, this.state.spotsOccupied);
+            const move = aiMove(this.state.squares);
             window.setTimeout((move) => this.handleClick(move), 400, move);
         }
     }
 
     render() {
-        console.log(three(this.state.squares));
         let status;
         if (this.state.winner) {
             status = 'Winner: ' + this.state.winner[0];
@@ -329,17 +328,68 @@ function result(squares, action, player) {
     return board;
 }
 
-function aiMove(state, spotsOccupied) {
-    if (state.length === spotsOccupied) return null;
-    let pivot = state.length - 1;
-    const squares = state.slice();
-    const indices = [...Array(L*L).keys()];
-    for (let i = 0; i < squares.length - spotsOccupied; i++) {
-        while (squares[i]) {
-            [squares[i], squares[pivot]] = [squares[pivot], squares[i]];
-            [indices[i], indices[pivot]] = [indices[pivot], indices[i]];
-            pivot -= 1;
+function utility(squares) {
+    const winner = calculateWinner(squares);
+    if (winner) {
+        if (winner[0] === 'X') {
+            return Infinity;
+        } else {
+            return -Infinity;
+        }
+    } else {
+        let bt, t, f, sf;
+        [bt, t, f, sf] = [brokenThree(squares), three(squares), four(squares), straightFour(squares)];
+        return bt[0] - bt[1] + 10 * (t[0] - t[1]) + 100 * (f[0] - f[1]) + 1000 * (sf[0] - sf[1]);
+    }
+}
+
+function maxPlayer(squares, alpha, beta, depth) {
+    if (terminal(squares) || depth === 2) {
+        return [utility(squares), null];
+    }
+    let v = [alpha, null];
+    for (let action of actions(squares)) {
+        const minVal = minPlayer(result(squares, action, 'X'), v[0], beta, depth + 1);
+        if (minVal[0] > v[0]) {
+            v = [minVal[0], action];
+            if (v[0] >= beta) {
+                break;
+            }
         }
     }
-    return indices[Math.floor(Math.random() * (squares.length - spotsOccupied))];
+    return v;
+}
+
+function minPlayer(squares, alpha, beta, depth) {
+    if (terminal(squares) || depth === 2) {
+        return [utility(squares), null];
+    }
+    let v = [beta, null];
+    for (let action of actions(squares)) {
+        const maxVal = maxPlayer(result(squares, action, 'O'), alpha, v[0], depth + 1);
+        if (maxVal[0] < v[0]) {
+            v = [maxVal[0], action];
+            if (alpha >= v[0]) {
+                break;
+            }
+        }
+    }
+    return v;
+
+}
+
+function aiMove(state) {
+    return minPlayer(state, -Infinity, Infinity, 0)[1];
+    // if (state.length === spotsOccupied) return null;
+    // let pivot = state.length - 1;
+    // const squares = state.slice();
+    // const indices = [...Array(L*L).keys()];
+    // for (let i = 0; i < squares.length - spotsOccupied; i++) {
+    //     while (squares[i]) {
+    //         [squares[i], squares[pivot]] = [squares[pivot], squares[i]];
+    //         [indices[i], indices[pivot]] = [indices[pivot], indices[i]];
+    //         pivot -= 1;
+    //     }
+    // }
+    // return indices[Math.floor(Math.random() * (squares.length - spotsOccupied))];
 }
