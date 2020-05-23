@@ -111,8 +111,7 @@ class Board extends React.Component {
 
     componentDidUpdate() {
         if (this.state.mode === 'ai' && !this.state.xIsNext) {
-            const move = aiMove(this.state.squares);
-            window.setTimeout((move) => this.handleClick(move), 400, move);
+            window.setTimeout((move) => this.handleClick(aiMove(this.state.squares)), 400);
         }
     }
 
@@ -380,16 +379,4 @@ function minPlayer(squares, alpha, beta, depth) {
 
 function aiMove(state) {
     return minPlayer(state, -Infinity, Infinity, 0)[1];
-    // if (state.length === spotsOccupied) return null;
-    // let pivot = state.length - 1;
-    // const squares = state.slice();
-    // const indices = [...Array(L*L).keys()];
-    // for (let i = 0; i < squares.length - spotsOccupied; i++) {
-    //     while (squares[i]) {
-    //         [squares[i], squares[pivot]] = [squares[pivot], squares[i]];
-    //         [indices[i], indices[pivot]] = [indices[pivot], indices[i]];
-    //         pivot -= 1;
-    //     }
-    // }
-    // return indices[Math.floor(Math.random() * (squares.length - spotsOccupied))];
 }
