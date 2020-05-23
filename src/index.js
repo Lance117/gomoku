@@ -12,6 +12,7 @@ const SEVENS = calculateLines(7);
 function Square(props) {
     let name = props.sqState ? 'square ' + props.sqState : 'square unclicked';
     if (props.isWinner) name = name + ' is-winner';
+    if (props.lastMove) name = name + ' last-move';
     return (
         <button className={name} cur-piece={props.curPiece} onClick={() => props.onClick()}>
             {props.value}
@@ -51,6 +52,7 @@ class Board extends React.Component {
             openModal: false,
             mode: 'default',
             selectedMode: null,
+            lastMove: null
         };
     }
 
@@ -64,7 +66,8 @@ class Board extends React.Component {
             squares: squares,
             xIsNext: !this.state.xIsNext,
             winner: calculateWinner(squares),
-            spotsOccupied: this.state.spotsOccupied + 1
+            spotsOccupied: this.state.spotsOccupied + 1,
+            lastMove: i
         });
     }
 
@@ -92,6 +95,7 @@ class Board extends React.Component {
                 value={this.state.squares[i]}
                 sqState={!!this.state.squares[i] ? 'clicked-' + this.state.squares[i] : null}
                 isWinner={this.state.winner && this.state.winner[1].includes(i)}
+                lastMove={!this.state.winner && this.state.lastMove === i}
                 onClick={() => this.handleClick(i)}
             />
         );
@@ -111,7 +115,7 @@ class Board extends React.Component {
 
     componentDidUpdate() {
         if (this.state.mode === 'ai' && !this.state.xIsNext) {
-            window.setTimeout((move) => this.handleClick(aiMove(this.state.squares)), 400);
+            window.setTimeout((move) => this.handleClick(aiMove(this.state.squares)), 500);
         }
     }
 

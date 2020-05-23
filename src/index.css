@@ -26,7 +26,7 @@ ol, ul {
   border: 1px solid black;
   float: left;
   font-size: 12px;
-  font-weight: bolder;
+  font-weight: bold;
   height: 20px;
   margin-right: -1px;
   margin-top: -1px;
@@ -45,6 +45,10 @@ ol, ul {
 
 .is-winner {
   border: 3px solid #1cb0f6;
+}
+
+.last-move {
+  border: 3px solid #a560e8;
 }
 
 .unclicked:hover {
