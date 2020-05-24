@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/gomoku/static/css/main.0c2e21da.chunk.css",
-    "main.js": "/gomoku/static/js/main.a7a85825.chunk.js",
-    "main.js.map": "/gomoku/static/js/main.a7a85825.chunk.js.map",
+    "main.js": "/gomoku/static/js/main.801afa55.chunk.js",
+    "main.js.map": "/gomoku/static/js/main.801afa55.chunk.js.map",
     "runtime-main.js": "/gomoku/static/js/runtime-main.2e4dc78a.js",
     "runtime-main.js.map": "/gomoku/static/js/runtime-main.2e4dc78a.js.map",
     "static/css/2.de424728.chunk.css": "/gomoku/static/css/2.de424728.chunk.css",
-    "static/js/2.8e29f9b5.chunk.js": "/gomoku/static/js/2.8e29f9b5.chunk.js",
-    "static/js/2.8e29f9b5.chunk.js.map": "/gomoku/static/js/2.8e29f9b5.chunk.js.map",
+    "static/js/2.ad924a59.chunk.js": "/gomoku/static/js/2.ad924a59.chunk.js",
+    "static/js/2.ad924a59.chunk.js.map": "/gomoku/static/js/2.ad924a59.chunk.js.map",
     "index.html": "/gomoku/index.html",
-    "precache-manifest.7c01a7ead9c47c1cdcb242f5b966c28b.js": "/gomoku/precache-manifest.7c01a7ead9c47c1cdcb242f5b966c28b.js",
+    "precache-manifest.10fe2e3ff898ffae0ef683db778dea31.js": "/gomoku/precache-manifest.10fe2e3ff898ffae0ef683db778dea31.js",
     "service-worker.js": "/gomoku/service-worker.js",
     "static/css/2.de424728.chunk.css.map": "/gomoku/static/css/2.de424728.chunk.css.map",
     "static/css/main.0c2e21da.chunk.css.map": "/gomoku/static/css/main.0c2e21da.chunk.css.map",
-    "static/js/2.8e29f9b5.chunk.js.LICENSE.txt": "/gomoku/static/js/2.8e29f9b5.chunk.js.LICENSE.txt"
+    "static/js/2.ad924a59.chunk.js.LICENSE.txt": "/gomoku/static/js/2.ad924a59.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.2e4dc78a.js",
     "static/css/2.de424728.chunk.css",
-    "static/js/2.8e29f9b5.chunk.js",
+    "static/js/2.ad924a59.chunk.js",
     "static/css/main.0c2e21da.chunk.css",
-    "static/js/main.a7a85825.chunk.js"
+    "static/js/main.801afa55.chunk.js"
   ]
 }

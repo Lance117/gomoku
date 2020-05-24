@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "61a7127aea76c6c1fa668dc7fb8837fa",
+    "revision": "473fdbd55a98e796e08fb2737c198cd2",
     "url": "/gomoku/index.html"
   },
   {
-    "revision": "ddf310342a4dd8f5c6d1",
+    "revision": "e19be79d4460632bf682",
     "url": "/gomoku/static/css/2.de424728.chunk.css"
   },
   {
-    "revision": "93e6367e69c1aeca7e37",
+    "revision": "e19e5560a7a3a479a26f",
     "url": "/gomoku/static/css/main.0c2e21da.chunk.css"
   },
   {
-    "revision": "ddf310342a4dd8f5c6d1",
-    "url": "/gomoku/static/js/2.8e29f9b5.chunk.js"
+    "revision": "e19be79d4460632bf682",
+    "url": "/gomoku/static/js/2.ad924a59.chunk.js"
   },
   {
     "revision": "5ac48c47bb3912b14c2d8de4f56d5ae8",
-    "url": "/gomoku/static/js/2.8e29f9b5.chunk.js.LICENSE.txt"
+    "url": "/gomoku/static/js/2.ad924a59.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "93e6367e69c1aeca7e37",
-    "url": "/gomoku/static/js/main.a7a85825.chunk.js"
+    "revision": "e19e5560a7a3a479a26f",
+    "url": "/gomoku/static/js/main.801afa55.chunk.js"
   },
   {
     "revision": "cd138d1ccd6f0321aaf2",
