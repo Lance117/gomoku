@@ -320,8 +320,23 @@ function terminal(squares) {
 
 function actions(squares) {
     const res = [];
+    const checkRow = [0, L, -L, 2*L, -2*L];
+    const checkCol = [-2, -1, 0, 1, 2];
     for (let i = 0; i < squares.length; i++) {
-        if (!squares[i]) res.push(i);
+        if (!squares[i]) {
+            let found = false;
+            for (let row of checkRow) {
+                if (found) break;
+                for (let col of checkCol) {
+                    let n = i + row + col;
+                    if (n >= 0 && n < 255 && squares[n]) {
+                        res.push(i);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
     }
     return res;
 }
