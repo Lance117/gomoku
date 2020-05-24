@@ -329,7 +329,7 @@ function actions(squares) {
                 if (found) break;
                 for (let col of checkCol) {
                     let n = i + row + col;
-                    if (n >= 0 && n < 255 && squares[n]) {
+                    if (n >= 0 && n < 255 && squares[n] === 'X') {
                         res.push(i);
                         found = true;
                         break;
@@ -358,7 +358,7 @@ function utility(squares) {
     } else {
         let bt, t, f, sf;
         [bt, t, f, sf] = [brokenThree(squares), three(squares), four(squares), straightFour(squares)];
-        return bt[0] - bt[1] + 10 * (t[0] - t[1]) + 100 * (f[0] - f[1]) + 1000 * (sf[0] - sf[1]);
+        return 15 * (bt[0] - bt[1]) + 25 * (t[0] - t[1]) + 40 * (f[0] - f[1]) + 400 * (sf[0] - sf[1]);
     }
 }
 
@@ -398,5 +398,7 @@ function minPlayer(squares, alpha, beta, depth) {
 }
 
 function aiMove(state) {
-    return minPlayer(state, -Infinity, Infinity, 0)[1];
+    let a = minPlayer(state, -Infinity, Infinity, 0);
+    console.log(a);
+    return a[1];
 }
