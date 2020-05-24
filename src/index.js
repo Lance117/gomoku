@@ -83,7 +83,8 @@ class Board extends React.Component {
             spotsOccupied: 0,
             openModal: false,
             mode: mode,
-            selectedMode: null
+            selectedMode: null,
+            lastMove: null
         })
     }
 
@@ -335,9 +336,9 @@ function utility(squares) {
     const winner = calculateWinner(squares);
     if (winner) {
         if (winner[0] === 'X') {
-            return Infinity;
+            return 1000000;
         } else {
-            return -Infinity;
+            return -1000000;
         }
     } else {
         let bt, t, f, sf;
