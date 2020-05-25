@@ -52,7 +52,7 @@ class Board extends React.Component {
             winner: null,
             spotsOccupied: 0,
             openModal: false,
-            mode: 'default',
+            mode: 'ai',
             selectedMode: null,
             lastMove: null
         };
@@ -130,8 +130,10 @@ class Board extends React.Component {
         } else if (this.state.spotsOccupied === L * L) {
             status = 'Game ended in a draw';
         } else if (this.state.mode === 'ai' && !this.state.xIsNext) {
-            status = 'Thinking...'
-        } else {
+            status = 'Thinking...';
+        } else if (this.state.mode === 'ai') {
+            status = 'Human vs AI: your turn!';
+        }else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
             alertColor = this.state.xIsNext ? 'info' : 'primary';
         }
