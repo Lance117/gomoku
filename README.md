@@ -1,6 +1,6 @@
 **Gomoku** is a Five in a Row board game. The AI player makes decisions using [minimax](https://en.wikipedia.org/wiki/Minimax) and [alpha-beta pruning](https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning).
 
-<img src="demo.gif">
+<img src="demo.gif" width="360">
 
 ### Code Samples
 #### Utility function
