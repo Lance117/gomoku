@@ -1,5 +1,5 @@
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
+  font: 17px "Century Gothic", Futura, sans-serif;
   margin: 20px;
 }
 
@@ -15,10 +15,6 @@ ol, ul {
 
 .btn-options {
   margin-top: 10px;
-}
-
-.status {
-  margin-bottom: 10px;
 }
 
 .square {

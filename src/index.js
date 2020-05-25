@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from "reactstrap";
+import { Alert, Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from "reactstrap";
 import './index.css';
 
 const L = 15;
@@ -21,20 +21,22 @@ function Square(props) {
 }
 
 function Restart(props) {
-    let title;
+    let title, modalMsg;
     if (props.mode === 'default') {
-        title = 'Single Player Mode';
+        title = 'Play With a Friend';
+        modalMsg = 'Are you sure you want to restart?';
     } else if (props.mode === 'ai') {
         title = 'Play Against Computer';
+        modalMsg = 'Are you sure you want to play against computer?';
     }
     return (
         <Modal isOpen={props.modal} toggle={props.toggle}>
             <ModalHeader toggle={props.toggle}>{title}</ModalHeader>
             <ModalBody>
-               Are you sure you want to restart? 
+                {modalMsg}
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={props.reset}>Restart</Button>{' '}
+                <Button color="primary" onClick={props.reset}>Yes</Button>{' '}
                 <Button color="secondary" onClick={props.toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>
@@ -121,28 +123,30 @@ class Board extends React.Component {
     }
 
     render() {
-        let status;
+        let status, alertColor;
         if (this.state.winner) {
             status = 'Winner: ' + this.state.winner[0];
+            alertColor = this.state.winner[0] === 'X' ? 'success' : 'danger';
         } else if (this.state.spotsOccupied === L * L) {
             status = 'Game ended in a draw';
         } else if (this.state.mode === 'ai' && !this.state.xIsNext) {
             status = 'Thinking...'
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+            alertColor = this.state.xIsNext ? 'info' : 'primary';
         }
         const thinking = this.state.mode === 'ai' && !this.state.xIsNext && !this.state.winner;
 
         return (
             <div>
-                <div className="status">
+                <Alert color={alertColor}>
                     {status}
                     {thinking && <Spinner size="sm" color="primary" />}
-                </div>
+                </Alert>
                 {this.renderBoard()}
                 <div className="btn-options">
-                    <Button color="primary" onClick={(e) => this.toggle('default', e)}>RESTART GAME</Button>{' '}
                     <Button color="info" onClick={(e) => this.toggle('ai', e)}>PLAY COMPUTER</Button>{' '}
+                    <Button color="primary" onClick={(e) => this.toggle('default', e)}>PLAY A FRIEND</Button>{' '}
                 </div>
                 <Restart
                     modal={this.state.openModal}
@@ -399,6 +403,6 @@ function minPlayer(squares, alpha, beta, depth) {
 
 function aiMove(state) {
     let a = minPlayer(state, -Infinity, Infinity, 0);
-    console.log(a);
+    // console.log(a);
     return a[1];
 }
