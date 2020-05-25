@@ -131,9 +131,10 @@ class Board extends React.Component {
             status = 'Game ended in a draw';
         } else if (this.state.mode === 'ai' && !this.state.xIsNext) {
             status = 'Thinking...';
+            alertColor = 'info';
         } else if (this.state.mode === 'ai') {
-            status = 'Human vs AI: your turn!';
-        }else {
+            status = 'Human vs AI: your turn';
+        } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
             alertColor = this.state.xIsNext ? 'info' : 'primary';
         }
