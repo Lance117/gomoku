@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "7aff3410d94dfe3f31a07427a23045ab",
+    "revision": "aa6010e2e8db886453ef598fc95a6554",
     "url": "/gomoku/index.html"
   },
   {
