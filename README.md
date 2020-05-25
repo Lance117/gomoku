@@ -2,10 +2,6 @@
 
 <img src="demo.gif">
 
-### Features
-- 3 door game and simulator for N rounds
-- Switch/stay stats saved in LocalStorage
-
 ### Code Samples
 #### Utility function
 Since Gomoku is played on a 15x15 board, minimax would take a very long time to make a decision if the utility function only defined a score for winning and losing. To speed up the AI's decision, I limited the depth and used the idea of "threat sequences" to evaluate the state (in Gomoku, the best strategy is to make threats while also being aware of the threats your opponent is making). This paper was helpful in explaining Gomoku threat sequences: https://pdfs.semanticscholar.org/f476/00662cadb0975f9cfd7867389efedda6f873.pdf
