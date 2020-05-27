@@ -191,6 +191,7 @@ function makeDiags(start, n, d) {
     for (let i = 0; i < n; i++) {
         res.push(start + i * d)
     }
+    console.log(res);
     return res;
 }
 
@@ -214,7 +215,7 @@ function calculateLines(n) {
             res.push(col);
         }
         // get winning diag lines
-        for (let j = 0; j < L - n - 1 - i; j++) {
+        for (let j = 0; j < L - n + 1 - i; j++) {
             const d1 = L + 1;
             const d2 = L - 1;
             let col1 = i + d1 * j;
