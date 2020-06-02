@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/gomoku/static/css/main.e6ea1810.chunk.css",
-    "main.js": "/gomoku/static/js/main.4675eaf9.chunk.js",
-    "main.js.map": "/gomoku/static/js/main.4675eaf9.chunk.js.map",
+    "main.js": "/gomoku/static/js/main.9ca85efc.chunk.js",
+    "main.js.map": "/gomoku/static/js/main.9ca85efc.chunk.js.map",
     "runtime-main.js": "/gomoku/static/js/runtime-main.2e4dc78a.js",
     "runtime-main.js.map": "/gomoku/static/js/runtime-main.2e4dc78a.js.map",
     "static/css/2.de424728.chunk.css": "/gomoku/static/css/2.de424728.chunk.css",
     "static/js/2.214eca36.chunk.js": "/gomoku/static/js/2.214eca36.chunk.js",
     "static/js/2.214eca36.chunk.js.map": "/gomoku/static/js/2.214eca36.chunk.js.map",
     "index.html": "/gomoku/index.html",
-    "precache-manifest.eb88a54e87fc51f77f1127664b525483.js": "/gomoku/precache-manifest.eb88a54e87fc51f77f1127664b525483.js",
+    "precache-manifest.f2ba11bc65895bec3fda1b899016b3ee.js": "/gomoku/precache-manifest.f2ba11bc65895bec3fda1b899016b3ee.js",
     "service-worker.js": "/gomoku/service-worker.js",
     "static/css/2.de424728.chunk.css.map": "/gomoku/static/css/2.de424728.chunk.css.map",
     "static/css/main.e6ea1810.chunk.css.map": "/gomoku/static/css/main.e6ea1810.chunk.css.map",
@@ -20,6 +20,6 @@
     "static/css/2.de424728.chunk.css",
     "static/js/2.214eca36.chunk.js",
     "static/css/main.e6ea1810.chunk.css",
-    "static/js/main.4675eaf9.chunk.js"
+    "static/js/main.9ca85efc.chunk.js"
   ]
 }
