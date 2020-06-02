@@ -123,6 +123,12 @@ class Board extends React.Component {
     }
 
     render() {
+        // console.log(utility(this.state.squares))
+        // console.log('broken three: ' + brokenThree(this.state.squares))
+        //  console.log('four: ' + four(this.state.squares))
+        //  console.log('three: ' + three(this.state.squares))
+        //  console.log('straight four: ' + straightFour(this.state.squares))
+
         let status, alertColor;
         if (this.state.winner) {
             status = 'Winner: ' + this.state.winner[0];
@@ -191,8 +197,13 @@ function makeDiags(start, n, d) {
     for (let i = 0; i < n; i++) {
         res.push(start + i * d)
     }
-    console.log(res);
     return res;
+}
+
+function counter(arr) {
+    let count = {};
+    arr.forEach(x => count[x] = (count[x] || 0) + 1);
+    return count;
 }
 
 function calculateLines(n) {
@@ -243,14 +254,14 @@ function calculateWinner(squares) {
 function four(squares) {
     const res = [0, 0];
     for (let i = 0; i < LINES.length; i++) {
-        const lineNum = LINES[i];
-        const line = lineNum.map(x => squares[x]).sort();
-        if (line[0] && line.filter(x => x === line[0]).length === 4 && !line[4]) {
-            if (line[0] === 'X') {
-                res[0] += 1;
-            } else {
-                res[1] += 1;
-            }
+        const line = LINES[i].map(x => squares[x]);
+        const count = counter(line);
+        if (count['X'] === 4 && count[null] === 1) {
+            res[0] += 1;
+        } else if (count['O'] === 4 && count[null] === 1) {
+            res[1] += 1;
+            // console.log(LINES[i])
+            // console.log(LINES)
         }
     }
     return res;
@@ -278,26 +289,33 @@ function three(squares) {
     for (let i = 0; i < SEVENS.length; i++) {
         const line = SEVENS[i];
         const sLine = line.map(x => squares[x]);
-        const slice = line.slice(2, 5);
-        const isThree = squares[slice[0]] && slice.every((x, i, arr) => squares[x] === squares[arr[0]]);
-        if (isThree && sLine.filter(x => x === null).length === 4) {
-            if (squares[slice[0]] === 'X') {
+        const sLine1 = sLine.slice(0, 6);
+        const sLine2 = sLine.slice(1, 7);
+        const count = counter(sLine);
+        const count1 = counter(sLine1);
+        const count2 = counter(sLine2);
+        const slice = sLine.slice(2, 5);
+        const isThree = slice[0] && slice.every(x => x === slice[0]);
+        if (isThree && count[null] === 4) {
+            if (slice[0] === 'X') {
                 res[0] += 1;
             } else {
                 res[1] += 1;
             }
+            // console.log('three 2: ' + sLine + 'line: ' + line)
+            continue;
         }
-    }
-    for (let i = 0; i < SIXES.length; i++) {
-        const line = SIXES[i];
-        const sLine = line.map(x => squares[x]);
-        const slice = line.slice(1, 4);
-        const isThree = squares[slice[0]] && slice.every((x, i, arr) => squares[x] === squares[arr[0]]);
-        if (isThree && sLine.filter(x => x === null).length === 3) {
-            if (squares[slice[0]] === 'X') {
-                res[0] += 1;
-            } else {
-                res[1] += 1;
+        for (let s of [sLine1, sLine2]) {
+            const sl = s.slice(1, 5);
+            const counter = s === sLine1 ? count1 : count2;
+            if (counter[null] === 3 && sl.filter(x => x === sl[1]).length === 3 && (!(sl[0] && sl[4]))) {
+                if (sl[1] === 'X') {
+                    res[0] += 1;
+                } else if (sl[1] === 'O') {
+                    res[1] += 1;
+                }
+                // console.log('three 2: ' + s + 'line: ' + line)
+                break;
             }
         }
     }
@@ -308,11 +326,12 @@ function brokenThree(squares) {
     const res = [0, 0];
     for (let i = 0; i < SIXES.length; i++) {
         const line = SIXES[i];
-        const slice = line.slice(1, 5);
-        const sLine = slice.map(x => squares[x]).sort();
-        const isThree = sLine[0] && sLine.filter(x => x === sLine[0]).length === 3 && !sLine[4];
-        if (isThree && !(squares[line[0]] || squares[line[5]])) {
-            if (squares[slice[0]] === 'X') {
+        const sLine = line.map(x => squares[x]);
+        const count = counter(sLine);
+        const slice = sLine.slice(1, 5);
+        const isThree = slice[0] && slice[3] && slice.filter(x => x === slice[0]).length === 3;
+        if (isThree && count[null] === 3) {
+            if (slice[0] === 'X') {
                 res[0] += 1;
             } else {
                 res[1] += 1;
@@ -328,8 +347,10 @@ function terminal(squares) {
 
 function actions(squares) {
     const res = [];
-    const checkRow = [0, L, -L, 2*L, -2*L];
-    const checkCol = [-2, -1, 0, 1, 2];
+    const threatSpace = [];
+    const checkRow = [0, L, -L];
+    const checkCol = [-1, 0, 1];
+    let util = 0;
     for (let i = 0; i < squares.length; i++) {
         if (!squares[i]) {
             let found = false;
@@ -337,7 +358,7 @@ function actions(squares) {
                 if (found) break;
                 for (let col of checkCol) {
                     let n = i + row + col;
-                    if (n >= 0 && n < 255 && squares[n] === 'X') {
+                    if (n >= 0 && n < 255 && squares[n]) {
                         res.push(i);
                         found = true;
                         break;
@@ -346,7 +367,16 @@ function actions(squares) {
             }
         }
     }
-    return res;
+    for (let i of res) {
+        let xActionUtil = utility(result(squares, i, 'X'));
+        let oActionUtil = utility(result(squares, i, 'O'));
+        if (xActionUtil !== util || oActionUtil !== util) {
+            threatSpace.push(i);
+            util = xActionUtil !== util ? xActionUtil : oActionUtil;
+        }
+    }
+    // if (threatSpace.length > 0) console.log(threatSpace)
+    return threatSpace.length > 0 ? threatSpace : res;
 }
 
 function result(squares, action, player) {
@@ -359,14 +389,14 @@ function utility(squares) {
     const winner = calculateWinner(squares);
     if (winner) {
         if (winner[0] === 'X') {
-            return 1000000;
+            return 10000;
         } else {
-            return -1000000;
+            return -10000;
         }
     } else {
         let bt, t, f, sf;
         [bt, t, f, sf] = [brokenThree(squares), three(squares), four(squares), straightFour(squares)];
-        return 15 * (bt[0] - bt[1]) + 25 * (t[0] - t[1]) + 40 * (f[0] - f[1]) + 400 * (sf[0] - sf[1]);
+        return 15 * (1.1*bt[0] - bt[1]) + 25 * (1.1*t[0] - t[1]) + 70 * (1.1*f[0] - f[1]) + 500 * (1.1*sf[0] - sf[1]);
     }
 }
 
@@ -401,12 +431,11 @@ function minPlayer(squares, alpha, beta, depth) {
             }
         }
     }
+    // console.log(v);
     return v;
 
 }
 
 function aiMove(state) {
-    let a = minPlayer(state, -Infinity, Infinity, 0);
-    // console.log(a);
-    return a[1];
+    return minPlayer(state, -Infinity, Infinity, 0)[1];
 }
