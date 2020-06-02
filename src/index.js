@@ -350,7 +350,7 @@ function actions(squares) {
     const threatSpace = [];
     const checkRow = [0, L, -L];
     const checkCol = [-1, 0, 1];
-    let util = 0;
+    let util = utility(squares);
     for (let i = 0; i < squares.length; i++) {
         if (!squares[i]) {
             let found = false;
