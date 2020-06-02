@@ -372,7 +372,6 @@ function actions(squares) {
         let oActionUtil = utility(result(squares, i, 'O'));
         if (xActionUtil !== util || oActionUtil !== util) {
             threatSpace.push(i);
-            util = xActionUtil !== util ? xActionUtil : oActionUtil;
         }
     }
     // if (threatSpace.length > 0) console.log(threatSpace)
