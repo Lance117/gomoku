@@ -123,12 +123,6 @@ class Board extends React.Component {
     }
 
     render() {
-        // console.log(utility(this.state.squares))
-        // console.log('broken three: ' + brokenThree(this.state.squares))
-        //  console.log('four: ' + four(this.state.squares))
-        //  console.log('three: ' + three(this.state.squares))
-        //  console.log('straight four: ' + straightFour(this.state.squares))
-
         let status, alertColor;
         if (this.state.winner) {
             status = 'Winner: ' + this.state.winner[0];
@@ -260,8 +254,6 @@ function four(squares) {
             res[0] += 1;
         } else if (count['O'] === 4 && count[null] === 1) {
             res[1] += 1;
-            // console.log(LINES[i])
-            // console.log(LINES)
         }
     }
     return res;
@@ -302,7 +294,6 @@ function three(squares) {
             } else {
                 res[1] += 1;
             }
-            // console.log('three 2: ' + sLine + 'line: ' + line)
             continue;
         }
         for (let s of [sLine1, sLine2]) {
@@ -314,7 +305,6 @@ function three(squares) {
                 } else if (sl[1] === 'O') {
                     res[1] += 1;
                 }
-                // console.log('three 2: ' + s + 'line: ' + line)
                 break;
             }
         }
@@ -347,7 +337,7 @@ function terminal(squares) {
 
 function actions(squares) {
     const res = [];
-    const threatSpace = [];
+    let threatSpace = [];
     const checkRow = [0, L, -L];
     const checkCol = [-1, 0, 1];
     let util = utility(squares);
@@ -371,11 +361,11 @@ function actions(squares) {
         let xActionUtil = utility(result(squares, i, 'X'));
         let oActionUtil = utility(result(squares, i, 'O'));
         if (xActionUtil !== util || oActionUtil !== util) {
-            threatSpace.push(i);
+            threatSpace.push([i, Math.max(Math.abs(xActionUtil-util), Math.abs(oActionUtil-util))]);
         }
     }
-    // if (threatSpace.length > 0) console.log(threatSpace)
-    return threatSpace.length > 0 ? threatSpace : res;
+    threatSpace = threatSpace.sort((a,b) => b[1]-a[1]);
+    return threatSpace.length > 0 ? threatSpace.map(x => x[0]) : res;
 }
 
 function result(squares, action, player) {
@@ -430,7 +420,6 @@ function minPlayer(squares, alpha, beta, depth) {
             }
         }
     }
-    // console.log(v);
     return v;
 
 }
