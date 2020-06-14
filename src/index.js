@@ -123,6 +123,8 @@ class Board extends React.Component {
     }
 
     render() {
+        // console.log(utility(this.state.squares))
+        // actions(this.state.squares)
         let status, alertColor;
         if (this.state.winner) {
             status = 'Winner: ' + this.state.winner[0];
@@ -203,7 +205,7 @@ function counter(arr) {
 function calculateLines(n) {
     const res = [];
     for (let i = 0; i < L; i++) {
-        // get winning row lines
+        // row lines
         for (let j = i * L; j <= i * L + L - n; j++) {
             const row = [];
             for (let k = 0; k < n; k++) {
@@ -211,7 +213,7 @@ function calculateLines(n) {
             }
             res.push(row);
         }
-        // get winning col lines
+        // col lines
         for (let j = i; j <= i + L * (L - n); j += L) {
             const col = [];
             for (let k = 0; k < n; k++) {
@@ -219,7 +221,7 @@ function calculateLines(n) {
             }
             res.push(col);
         }
-        // get winning diag lines
+        // diag lines
         for (let j = 0; j < L - n + 1 - i; j++) {
             const d1 = L + 1;
             const d2 = L - 1;
@@ -365,6 +367,7 @@ function actions(squares) {
         }
     }
     threatSpace = threatSpace.sort((a,b) => b[1]-a[1]);
+    // console.log(threatSpace)
     return threatSpace.length > 0 ? threatSpace.map(x => x[0]) : res;
 }
 
@@ -385,12 +388,12 @@ function utility(squares) {
     } else {
         let bt, t, f, sf;
         [bt, t, f, sf] = [brokenThree(squares), three(squares), four(squares), straightFour(squares)];
-        return 15 * (1.1*bt[0] - bt[1]) + 25 * (1.1*t[0] - t[1]) + 70 * (1.1*f[0] - f[1]) + 500 * (1.1*sf[0] - sf[1]);
+        return 15 * (bt[0] - bt[1]) + 25 * (t[0] - t[1]) + 70 * (f[0] - f[1]) + 1000 * (sf[0] - sf[1]);
     }
 }
 
 function maxPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth === 2) {
+    if (terminal(squares) || depth === 3) {
         return [utility(squares), null];
     }
     let v = [alpha, null];
@@ -407,7 +410,7 @@ function maxPlayer(squares, alpha, beta, depth) {
 }
 
 function minPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth === 2) {
+    if (terminal(squares) || depth === 3) {
         return [utility(squares), null];
     }
     let v = [beta, null];
