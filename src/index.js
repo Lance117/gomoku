@@ -8,6 +8,7 @@ const L = 15;
 const LINES = calculateLines(5);
 const SIXES = calculateLines(6);
 const SEVENS = calculateLines(7);
+const RANDTAB = zobrist();
 
 function Square(props) {
     let name = props.sqState ? 'square ' + props.sqState : 'square unclicked';
@@ -388,12 +389,12 @@ function utility(squares) {
     } else {
         let bt, t, f, sf;
         [bt, t, f, sf] = [brokenThree(squares), three(squares), four(squares), straightFour(squares)];
-        return 15 * (bt[0] - bt[1]) + 25 * (t[0] - t[1]) + 70 * (f[0] - f[1]) + 1000 * (sf[0] - sf[1]);
+        return 15 * (bt[0] - bt[1]) + 25 * (t[0] - t[1]) + 70 * (f[0] - f[1]) + 500 * (sf[0] - sf[1]);
     }
 }
 
 function maxPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth === 3) {
+    if (terminal(squares) || depth === 2) {
         return [utility(squares), null];
     }
     let v = [alpha, null];
@@ -410,7 +411,7 @@ function maxPlayer(squares, alpha, beta, depth) {
 }
 
 function minPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth === 3) {
+    if (terminal(squares) || depth === 2) {
         return [utility(squares), null];
     }
     let v = [beta, null];
@@ -429,4 +430,23 @@ function minPlayer(squares, alpha, beta, depth) {
 
 function aiMove(state) {
     return minPlayer(state, -Infinity, Infinity, 0)[1];
+}
+
+function zobrist() {
+    let res = new Uint32Array(2 * L * L * 7);
+    for (let i = 0; i < res.length; i++) {
+        res[i] = Math.random() * 4294967296;
+    return res;
+    }
+}
+
+function hash(state) {
+    let h = 0;
+    for (let i = 0; i < 255; i++) {
+        if (state[i]) {
+            const j = state[i] = 'X' ? 1 : 2;
+            h ^= RANDTAB[(i + 1) * j];
+        }
+    }
+    return h;
 }
