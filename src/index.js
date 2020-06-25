@@ -9,6 +9,7 @@ const LINES = calculateLines(5);
 const SIXES = calculateLines(6);
 const SEVENS = calculateLines(7);
 const RANDTAB = zobrist();
+const TRANSPOS_TAB = {};
 
 function Square(props) {
     let name = props.sqState ? 'square ' + props.sqState : 'square unclicked';
@@ -55,7 +56,7 @@ class Board extends React.Component {
             openModal: false,
             mode: 'ai',
             selectedMode: null,
-            lastMove: null
+            lastMove: null,
         };
     }
 
@@ -394,11 +395,13 @@ function utility(squares) {
 }
 
 function maxPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth === 2) {
+    if (terminal(squares) || depth === 4) {
         return [utility(squares), null];
     }
     let v = [alpha, null];
+    const boardHash = hash(squares);
     for (let action of actions(squares)) {
+        if (boardHash in TRANSPOS_TAB) return [alpha, TRANSPOS_TAB[boardHash]];
         const minVal = minPlayer(result(squares, action, 'X'), v[0], beta, depth + 1);
         if (minVal[0] > v[0]) {
             v = [minVal[0], action];
@@ -407,15 +410,18 @@ function maxPlayer(squares, alpha, beta, depth) {
             }
         }
     }
+    TRANSPOS_TAB[boardHash] = v[1];
     return v;
 }
 
 function minPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth === 2) {
+    if (terminal(squares) || depth === 4) {
         return [utility(squares), null];
     }
     let v = [beta, null];
+    const boardHash = hash(squares);
     for (let action of actions(squares)) {
+        if (boardHash in TRANSPOS_TAB) return [beta, TRANSPOS_TAB[boardHash]];
         const maxVal = maxPlayer(result(squares, action, 'O'), alpha, v[0], depth + 1);
         if (maxVal[0] < v[0]) {
             v = [maxVal[0], action];
@@ -424,6 +430,7 @@ function minPlayer(squares, alpha, beta, depth) {
             }
         }
     }
+    TRANSPOS_TAB[boardHash] = v[1];
     return v;
 
 }
@@ -436,15 +443,15 @@ function zobrist() {
     let res = new Uint32Array(2 * L * L * 7);
     for (let i = 0; i < res.length; i++) {
         res[i] = Math.random() * 4294967296;
-    return res;
     }
+    return res;
 }
 
 function hash(state) {
     let h = 0;
-    for (let i = 0; i < 255; i++) {
+    for (let i = 0; i < state.length; i++) {
         if (state[i]) {
-            const j = state[i] = 'X' ? 1 : 2;
+            const j = state[i] === 'X' ? 1 : 2;
             h ^= RANDTAB[(i + 1) * j];
         }
     }
