@@ -125,8 +125,8 @@ class Board extends React.Component {
     }
 
     render() {
-        // console.log(utility(this.state.squares))
-        // actions(this.state.squares)
+        console.log(TRANSPOS_TAB)
+        console.log(hash(this.state.squares))
         let status, alertColor;
         if (this.state.winner) {
             status = 'Winner: ' + this.state.winner[0];
@@ -383,9 +383,9 @@ function utility(squares) {
     const winner = calculateWinner(squares);
     if (winner) {
         if (winner[0] === 'X') {
-            return 10000;
+            return Infinity;
         } else {
-            return -10000;
+            return -Infinity;
         }
     } else {
         let bt, t, f, sf;
@@ -398,10 +398,10 @@ function maxPlayer(squares, alpha, beta, depth) {
     if (terminal(squares) || depth === 4) {
         return [utility(squares), null];
     }
-    let v = [alpha, null];
-    const boardHash = hash(squares);
-    for (let action of actions(squares)) {
-        if (boardHash in TRANSPOS_TAB) return [alpha, TRANSPOS_TAB[boardHash]];
+    const [boardHash, curActs] = [hash(squares), actions(squares)];
+    let v = [alpha, curActs[0]];
+    if (boardHash in TRANSPOS_TAB) return [alpha, TRANSPOS_TAB[boardHash]];
+    for (let action of curActs) {
         const minVal = minPlayer(result(squares, action, 'X'), v[0], beta, depth + 1);
         if (minVal[0] > v[0]) {
             v = [minVal[0], action];
@@ -418,10 +418,10 @@ function minPlayer(squares, alpha, beta, depth) {
     if (terminal(squares) || depth === 4) {
         return [utility(squares), null];
     }
-    let v = [beta, null];
-    const boardHash = hash(squares);
-    for (let action of actions(squares)) {
-        if (boardHash in TRANSPOS_TAB) return [beta, TRANSPOS_TAB[boardHash]];
+    const [boardHash, curActs] = [hash(squares), actions(squares)];
+    let v = [alpha, curActs[0]];
+    if (boardHash in TRANSPOS_TAB) return [beta, TRANSPOS_TAB[boardHash]];
+    for (let action of curActs) {
         const maxVal = maxPlayer(result(squares, action, 'O'), alpha, v[0], depth + 1);
         if (maxVal[0] < v[0]) {
             v = [maxVal[0], action];
@@ -440,7 +440,7 @@ function aiMove(state) {
 }
 
 function zobrist() {
-    let res = new Uint32Array(2 * L * L * 7);
+    let res = new Uint32Array(2*L*L);
     for (let i = 0; i < res.length; i++) {
         res[i] = Math.random() * 4294967296;
     }
@@ -451,8 +451,8 @@ function hash(state) {
     let h = 0;
     for (let i = 0; i < state.length; i++) {
         if (state[i]) {
-            const j = state[i] === 'X' ? 1 : 2;
-            h ^= RANDTAB[(i + 1) * j];
+            const j = state[i] === 'X' ? 0 : 1;
+            h ^= RANDTAB[i*2+j];
         }
     }
     return h;
