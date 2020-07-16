@@ -369,8 +369,7 @@ function actions(squares) {
         }
     }
     threatSpace = threatSpace.sort((a,b) => b[1]-a[1]);
-    // console.log(threatSpace)
-    return threatSpace.length > 0 ? threatSpace.map(x => x[0]) : res;
+    return threatSpace.length > 0 ? threatSpace.map(x => x[0]).slice(0, 3) : res.slice(0, 3);
 }
 
 function result(squares, action, player) {
