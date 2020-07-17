@@ -125,8 +125,8 @@ class Board extends React.Component {
     }
 
     render() {
-        console.log(TRANSPOS_TAB)
-        console.log(hash(this.state.squares))
+        // console.log(actions(this.state.squares))
+        // console.log(utility(this.state.squares))
         let status, alertColor;
         if (this.state.winner) {
             status = 'Winner: ' + this.state.winner[0];
@@ -415,10 +415,11 @@ function maxPlayer(squares, alpha, beta, depth) {
 
 function minPlayer(squares, alpha, beta, depth) {
     if (terminal(squares) || depth === 4) {
+        if (four(squares)[1] > 0 || straightFour(squares)[1] > 0) return [-500, null];
         return [utility(squares), null];
     }
     const [boardHash, curActs] = [hash(squares), actions(squares)];
-    let v = [alpha, curActs[0]];
+    let v = [beta, curActs[0]];
     if (boardHash in TRANSPOS_TAB) return [beta, TRANSPOS_TAB[boardHash]];
     for (let action of curActs) {
         const maxVal = maxPlayer(result(squares, action, 'O'), alpha, v[0], depth + 1);
