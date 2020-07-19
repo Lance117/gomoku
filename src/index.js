@@ -391,7 +391,6 @@ function utility(squares) {
 
 function maxPlayer(squares, alpha, beta, depth) {
     if (terminal(squares) || depth === 4) {
-        if (four(squares)[0] > 0 || straightFour(squares)[0] > 0) return [100, null];
         return [utility(squares), null];
     }
     const [boardHash, curActs] = [hash(squares), actions(squares)];
@@ -412,7 +411,6 @@ function maxPlayer(squares, alpha, beta, depth) {
 
 function minPlayer(squares, alpha, beta, depth) {
     if (terminal(squares) || depth === 4) {
-        if (four(squares)[1] > 0 || straightFour(squares)[1] > 0) return [-100, null];
         return [utility(squares), null];
     }
     const [boardHash, curActs] = [hash(squares), actions(squares)];
