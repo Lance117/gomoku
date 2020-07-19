@@ -381,11 +381,7 @@ function result(squares, action, player) {
 function utility(squares) {
     const winner = calculateWinner(squares);
     if (winner) {
-        if (winner[0] === 'X') {
-            return Infinity;
-        } else {
-            return -Infinity;
-        }
+        return winner[0] === 'X' ? Infinity : -Infinity;
     } else {
         let bt, t, f, sf;
         [bt, t, f, sf] = [brokenThree(squares), three(squares), four(squares), straightFour(squares)];
@@ -395,6 +391,7 @@ function utility(squares) {
 
 function maxPlayer(squares, alpha, beta, depth) {
     if (terminal(squares) || depth === 4) {
+        if (four(squares)[0] > 0 || straightFour(squares)[0] > 0) return [100, null];
         return [utility(squares), null];
     }
     const [boardHash, curActs] = [hash(squares), actions(squares)];
@@ -415,7 +412,7 @@ function maxPlayer(squares, alpha, beta, depth) {
 
 function minPlayer(squares, alpha, beta, depth) {
     if (terminal(squares) || depth === 4) {
-        if (four(squares)[1] > 0 || straightFour(squares)[1] > 0) return [-500, null];
+        if (four(squares)[1] > 0 || straightFour(squares)[1] > 0) return [-100, null];
         return [utility(squares), null];
     }
     const [boardHash, curActs] = [hash(squares), actions(squares)];
