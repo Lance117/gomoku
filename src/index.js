@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Alert, Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from "reactstrap";
+import { L, calculateLines } from './utils';
 import './index.css';
 
-const L = 15;
 const LINES = calculateLines(5);
 const SIXES = calculateLines(6);
 const SEVENS = calculateLines(7);
@@ -190,54 +190,10 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-function makeDiags(start, n, d) {
-    const res = [];
-    for (let i = 0; i < n; i++) {
-        res.push(start + i * d)
-    }
-    return res;
-}
-
 function counter(arr) {
     let count = {};
     arr.forEach(x => count[x] = (count[x] || 0) + 1);
     return count;
-}
-
-function calculateLines(n) {
-    const res = [];
-    for (let i = 0; i < L; i++) {
-        // row lines
-        for (let j = i * L; j <= i * L + L - n; j++) {
-            const row = [];
-            for (let k = 0; k < n; k++) {
-                row.push(j + k);
-            }
-            res.push(row);
-        }
-        // col lines
-        for (let j = i; j <= i + L * (L - n); j += L) {
-            const col = [];
-            for (let k = 0; k < n; k++) {
-                col.push(j + L * k);
-            }
-            res.push(col);
-        }
-        // diag lines
-        for (let j = 0; j < L - n + 1 - i; j++) {
-            const d1 = L + 1;
-            const d2 = L - 1;
-            let col1 = i + d1 * j;
-            let col2 = d2 * (j + 1) - i;
-            let row1 = L * i + d1 * j;
-            let row2 = L * i + d2 * (j + 1);
-            res.push(makeDiags(col1, n, d1));
-            res.push(makeDiags(col2, n, d2));
-            res.push(makeDiags(row1, n, d1));
-            res.push(makeDiags(row2, n, d2));
-        }
-    }
-    return res;
 }
 
 function calculateWinner(squares) {

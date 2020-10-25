@@ -23,12 +23,12 @@ ol, ul {
   float: left;
   font-size: 12px;
   font-weight: bold;
-  height: 20px;
+  height: 19px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 20px;
+  width: 19px;
 }
 
 @media only screen and (min-width: 768px) {
