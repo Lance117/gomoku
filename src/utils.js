@@ -145,6 +145,6 @@ export const brokenThree = (squares) => {
     return res;
 }
 
-export const LINES = calculateLines(5);
-export const SIXES = calculateLines(6);
-export const SEVENS = calculateLines(7);
+const LINES = calculateLines(5);
+const SIXES = calculateLines(6);
+const SEVENS = calculateLines(7);

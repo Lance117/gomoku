@@ -2,12 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Alert, Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from "reactstrap";
-import { L, calculateLines } from './utils';
+import { L, calculateWinner, four, straightFour, three, brokenThree } from './utils';
 import './index.css';
 
-const LINES = calculateLines(5);
-const SIXES = calculateLines(6);
-const SEVENS = calculateLines(7);
 const RANDTAB = zobrist();
 const TRANSPOS_TAB = {};
 
@@ -189,107 +186,6 @@ ReactDOM.render(
     <Game />,
     document.getElementById('root')
 );
-
-function counter(arr) {
-    let count = {};
-    arr.forEach(x => count[x] = (count[x] || 0) + 1);
-    return count;
-}
-
-function calculateWinner(squares) {
-    for (let i = 0; i < LINES.length; i++) {
-        if (squares[LINES[i][0]] && LINES[i].every( (x, i, arr) => squares[x] === squares[arr[0]])) {
-            return [squares[LINES[i][0]], LINES[i]]
-        }
-    }
-    return null;
-}
-
-function four(squares) {
-    const res = [0, 0];
-    for (let i = 0; i < LINES.length; i++) {
-        const line = LINES[i].map(x => squares[x]);
-        const count = counter(line);
-        if (count['X'] === 4 && count[null] === 1) {
-            res[0] += 1;
-        } else if (count['O'] === 4 && count[null] === 1) {
-            res[1] += 1;
-        }
-    }
-    return res;
-}
-
-function straightFour(squares) {
-    const res = [0, 0];
-    for (let i = 0; i < SIXES.length; i++) {
-        const line = SIXES[i];
-        const slice = line.slice(1, 5);
-        const isFour = squares[slice[0]] && slice.every((x, i, arr) => squares[x] === squares[arr[0]]);
-        if (isFour && !(squares[line[0]] || squares[line[5]])) {
-            if (squares[slice[0]] === 'X') {
-                res[0] += 1;
-            } else {
-                res[1] += 1;
-            }
-        }
-    }
-    return res;
-}
-
-function three(squares) {
-    const res = [0, 0];
-    for (let i = 0; i < SEVENS.length; i++) {
-        const line = SEVENS[i];
-        const sLine = line.map(x => squares[x]);
-        const sLine1 = sLine.slice(0, 6);
-        const sLine2 = sLine.slice(1, 7);
-        const count = counter(sLine);
-        const count1 = counter(sLine1);
-        const count2 = counter(sLine2);
-        const slice = sLine.slice(2, 5);
-        const isThree = slice[0] && slice.every(x => x === slice[0]);
-        if (isThree && count[null] === 4) {
-            if (slice[0] === 'X') {
-                res[0] += 1;
-            } else {
-                res[1] += 1;
-            }
-            continue;
-        }
-        for (let s of [sLine1, sLine2]) {
-            const sl = s.slice(1, 5);
-            const counter = s === sLine1 ? count1 : count2;
-            if (counter[null] === 3 && sl.filter(x => x === sl[1]).length === 3 && (!(sl[0] && sl[4]))) {
-                if (sl[1] === 'X') {
-                    res[0] += 1;
-                } else if (sl[1] === 'O') {
-                    res[1] += 1;
-                }
-                break;
-            }
-        }
-    }
-    return res;
-}
-
-function brokenThree(squares) {
-    const res = [0, 0];
-    for (let i = 0; i < SIXES.length; i++) {
-        const line = SIXES[i];
-        const sLine = line.map(x => squares[x]);
-        const count = counter(sLine);
-        const slice = sLine.slice(1, 5);
-        const isThree = slice[0] && slice[3] && slice.filter(x => x === slice[0]).length === 3;
-        if (isThree && count[null] === 3) {
-            if (slice[0] === 'X') {
-                res[0] += 1;
-            } else {
-                res[1] += 1;
-            }
-        }
-    }
-    return res;
-}
 
 function terminal(squares) {
     return calculateWinner(squares) || !squares.includes(null);
