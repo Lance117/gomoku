@@ -242,7 +242,7 @@ function utility(squares) {
 }
 
 function maxPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth === 4) {
+    if (terminal(squares) || depth >= 5) {
         return [utility(squares), null];
     }
     const [boardHash, curActs] = [hash(squares), actions(squares)];
@@ -262,7 +262,7 @@ function maxPlayer(squares, alpha, beta, depth) {
 }
 
 function minPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth === 4) {
+    if (terminal(squares) || depth > 4) {
         return [utility(squares), null];
     }
     const [boardHash, curActs] = [hash(squares), actions(squares)];
