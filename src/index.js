@@ -122,8 +122,6 @@ class Board extends React.Component {
     }
 
     render() {
-        // console.log(actions(this.state.squares))
-        // console.log(utility(this.state.squares))
         let status, alertColor;
         if (this.state.winner) {
             status = 'Winner: ' + this.state.winner[0];
@@ -242,7 +240,7 @@ function utility(squares) {
 }
 
 function maxPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth >= 5) {
+    if (terminal(squares) || depth > 4) {
         return [utility(squares), null];
     }
     const [boardHash, curActs] = [hash(squares), actions(squares)];
