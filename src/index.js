@@ -201,6 +201,9 @@ function actions(squares) {
             for (let row of checkRow) {
                 if (found) break;
                 for (let col of checkCol) {
+                    if (((i + 1) % 15 === 0 && col === 1) || (i % 15 === 0 && col === -1)) {
+                        continue;
+                    }
                     let n = i + row + col;
                     if (n >= 0 && n < 255 && squares[n]) {
                         res.push(i);
@@ -235,12 +238,12 @@ function utility(squares) {
     } else {
         let bt, t, f, sf;
         [bt, t, f, sf] = [brokenThree(squares), three(squares), four(squares), straightFour(squares)];
-        return 15 * (bt[0] - bt[1]) + 25 * (t[0] - t[1]) + 70 * (f[0] - f[1]) + 500 * (sf[0] - sf[1]);
+        return 15 * (bt[0] - bt[1]) + 25 * (t[0] - t[1]) + 100 * (f[0] - f[1]) + 500 * (sf[0] - sf[1]);
     }
 }
 
 function maxPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth > 4) {
+    if (terminal(squares) || depth > 3) {
         return [utility(squares), null];
     }
     const [boardHash, curActs] = [hash(squares), actions(squares)];
@@ -260,7 +263,7 @@ function maxPlayer(squares, alpha, beta, depth) {
 }
 
 function minPlayer(squares, alpha, beta, depth) {
-    if (terminal(squares) || depth > 4) {
+    if (terminal(squares) || depth > 3) {
         return [utility(squares), null];
     }
     const [boardHash, curActs] = [hash(squares), actions(squares)];
