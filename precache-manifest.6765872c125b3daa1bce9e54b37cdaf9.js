@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "3828a8acb22c967d53142bb6647a83a2",
+    "revision": "9f8b57c444c3c6b4a4138c902ae9b26a",
     "url": "/gomoku/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/gomoku/static/css/2.de424728.chunk.css"
   },
   {
-    "revision": "af2147a97a973c9859f8",
+    "revision": "1c7ac73cb0000f50396c",
     "url": "/gomoku/static/css/main.03be4faf.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/gomoku/static/js/2.df37c898.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "af2147a97a973c9859f8",
-    "url": "/gomoku/static/js/main.44700dde.chunk.js"
+    "revision": "1c7ac73cb0000f50396c",
+    "url": "/gomoku/static/js/main.445913fa.chunk.js"
   },
   {
     "revision": "cd138d1ccd6f0321aaf2",
